@@ -6,7 +6,7 @@
 /*   By: AleXwern <AleXwern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/16 14:45:39 by AleXwern          #+#    #+#             */
-/*   Updated: 2021/11/16 15:57:29 by AleXwern         ###   ########.fr       */
+/*   Updated: 2021/11/17 16:07:20 by AleXwern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ void			Timeliner::parse_config(void)
 		}
 		ft_splitfree(split);
 	}
+	printf("Configs loaded with:\nBLcount %ld\nMINHP: %u\n", blcount, minhp);
 	close(fd);
 }
 

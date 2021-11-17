@@ -6,13 +6,13 @@
 #    By: AleXwern <AleXwern@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/16 13:36:39 by AleXwern          #+#    #+#              #
-#    Updated: 2021/11/16 15:31:48 by AleXwern         ###   ########.fr        #
+#    Updated: 2021/11/17 16:36:38 by AleXwern         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME	= timeliner.exe
-FLAG	= -no-pie
-SRCFILE	= main.cpp timeliner.cpp config.cpp
+FLAG	= -no-pie -O1
+SRCFILE	= argv.cpp config.cpp main.cpp parser.cpp time.cpp timeliner.cpp
 SRC		= $(addprefix ./srcpp/,$(SRCFILE))
 OBJ		= $(addprefix ./objpp/,$(SRCFILE:.cpp=.o))
 LIBFT	= libft_asm/libft_asm.a

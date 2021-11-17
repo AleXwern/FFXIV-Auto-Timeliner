@@ -36,7 +36,7 @@ CFILE	= ft_memalloc.c ft_putendl.c ft_strcpy.c ft_strmapi.c ft_strsub.c \
 #This is to test spesific functions and removing it will allow entire thing to be used
 SRCFILE	= ft_strlen.asm ft_putstr_fd.asm ft_putendl_fd.asm \
 		ft_putstr.asm ft_putendl.asm ft_putchar.asm ft_memset.asm \
-		ft_atoi.asm ft_strcpy.asm ft_strclr.asm ft_strequ.asm \
+		ft_strcpy.asm ft_strclr.asm ft_strequ.asm \
 		ft_striter.asm ft_striteri.asm ft_atof.asm ft_strlcat.asm \
 		ft_strncat.asm ft_strncmp.asm ft_strncpy.asm ft_strnequ.asm \
 		ft_strnstr.asm ft_strrchr.asm ft_strstr.asm ft_wordlen.asm \
@@ -51,7 +51,7 @@ SRCFILE	= ft_strlen.asm ft_putstr_fd.asm ft_putendl_fd.asm \
 CMEM	= ft_memalloc.c ft_memdel.c ft_quadjoin.c ft_realloc.c \
 		ft_splitfree.c ft_strdel.c ft_strdup.c ft_strfjoin.c ft_strsjoin.c \
 		ft_strjoin.c ft_putnbr.c ft_putnbr_fd.c ft_putnbrln.c \
-		ft_putlongln.c get_next_line.c ft_strsplit.c
+		ft_putlongln.c get_next_line.c ft_strsplit.c ft_atoi.c
 SRCEXT	= .asm
 OBJEXT	= .o
 SRC		= $(addprefix ./src/,$(SRCFILE))
