@@ -6,7 +6,7 @@
 /*   By: AleXwern <AleXwern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/17 16:13:15 by AleXwern          #+#    #+#             */
-/*   Updated: 2022/04/09 16:44:58 by AleXwern         ###   ########.fr       */
+/*   Updated: 2022/04/09 23:31:47 by AleXwern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 **	MM	14-15
 **	SS	17-18
 */
-void	parse_time(char *str, t_toffset *time)
+void	parse_time(const char *str, t_toffset *time)
 {
 	time->year = atoi(str);
 	time->month = atoi(str + 5);

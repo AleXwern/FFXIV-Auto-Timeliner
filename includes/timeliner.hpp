@@ -6,7 +6,7 @@
 /*   By: AleXwern <AleXwern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/16 12:56:33 by AleXwern          #+#    #+#             */
-/*   Updated: 2022/04/09 18:09:37 by AleXwern         ###   ########.fr       */
+/*   Updated: 2022/04/09 23:40:21 by AleXwern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,12 @@ extern "C"
 }
 # include <fcntl.h>
 
-# define ATK_OPCODE	0x3132
-# define AOE_OPCODE	0x3232
+enum				e_opcodes
+{
+	OPCODE_CAST		= 0x3032,
+	OPCODE_ATK		= 0x3132,
+	OPCODE_AOE		= 0x3232
+};
 
 enum				e_parts
 {
@@ -65,8 +69,8 @@ enum				e_abilityflags
 enum				e_tags
 {
 	TAG_HP_MIN		= 0x5048,
-	TAG_TIME_MAX	= 0x4D54,
-	TAG_TIME_MIN	= 0x5854,
+	TAG_TIME_MIN	= 0x4D54,
+	TAG_TIME_MAX	= 0x5854,
 	TAG_OFFSET		= 0x464F,
 	TAG_BLACKLIST	= 0x4C42
 };
@@ -74,29 +78,39 @@ enum				e_tags
 typedef struct		s_timeoffset
 {
 	//YYMMDD just in case. Raids tend to be late
-	short			year;
-	char			month;
-	char			day;
-	char			hour;
-	char			min;
-	char			sec;
 	char			unused;
+	char			sec;
+	char			min;
+	char			hour;
+	char			day;
+	char			month;
+	short			year;
 }					t_toffset;
+
+union				u_offset
+{
+	t_toffset		offset;
+	t_uint64		bits;
+};
 
 class				Timeliner
 {
 private:
 	int				outfile;
 	int				infile;
-	union			u_offset
+	/*union			u_offset
 	{
 		t_toffset	offset;
 		t_uint64	bits;
-	}				time;
+	}				time;*/
+	u_offset		time;
+	u_offset		start;
+	u_offset		end;
 	char			**blacklist;
 	size_t			blcount;
 	t_uint32		minhp;
 
+	void			parse_timestamp(t_toffset *time, char *str);
 	void			sort_output(char *line);
 	void			error_out(const char *str);
 	void			add_blacklist(char *name);
@@ -109,7 +123,7 @@ public:
 	void			parse_file(void);
 };
 
-void	parse_time(char *str, t_toffset *time);
+void	parse_time(const char *str, t_toffset *time);
 void	offset_time(t_toffset *time, t_toffset *offset);
 
 #endif

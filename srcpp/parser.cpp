@@ -6,7 +6,7 @@
 /*   By: AleXwern <AleXwern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/17 15:48:33 by AleXwern          #+#    #+#             */
-/*   Updated: 2022/04/09 18:12:02 by AleXwern         ###   ########.fr       */
+/*   Updated: 2022/04/09 23:42:34 by AleXwern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void			Timeliner::parse_file(void)
 
 	while (get_next_line(infile, &line) == 1)
 	{
-		if (((short*)line)[0] == ATK_OPCODE || ((short*)line)[0] == AOE_OPCODE)
+		if (((short*)line)[0] == OPCODE_ATK || ((short*)line)[0] == OPCODE_AOE)
 			sort_output(line);
 		free(line);
 	}
@@ -43,7 +43,7 @@ void			Timeliner::sort_output(char *line)
 {
 	char		**split;
 	char		*out;
-	t_toffset	lineTime;
+	u_offset	lineTime;
 
 	split = ft_strsplit(line, '|');
 	//printf("Network data of %lu\n", ft_listlen(split));
@@ -57,10 +57,16 @@ void			Timeliner::sort_output(char *line)
 		ft_splitfree(split);
 		return ;
 	}
-	parse_time(split[PART_DATETIME], &lineTime);
+	parse_time(split[PART_DATETIME], &lineTime.offset);
+	//printf("%lu < %lu < %lu\n", start.bits, lineTime.bits, end.bits);
+	/*if (lineTime.bits < start.bits)// || lineTime.bits > end.bits)
+	{
+		ft_splitfree(split);
+		return;
+	}*/
 	if (time.bits)
-		offset_time(&lineTime, &time.offset);
-	print_time(&lineTime);
+		offset_time(&lineTime.offset, &time.offset);
+	print_time(&lineTime.offset);
 	ft_putstr_fd(split[PART_NAME], outfile);
 	ft_putstr_fd(" - Attack: ", outfile);
 	ft_putstr_fd(split[PART_ATTACKNAME], outfile);

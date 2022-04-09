@@ -6,7 +6,7 @@
 /*   By: AleXwern <AleXwern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/16 13:14:33 by AleXwern          #+#    #+#             */
-/*   Updated: 2022/04/09 17:47:24 by AleXwern         ###   ########.fr       */
+/*   Updated: 2022/04/09 23:09:36 by AleXwern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@ Timeliner::Timeliner(int ac, char **av)
 	blacklist = NULL;
 	minhp = 0;
 	time.bits = 0;
+	start.bits = 0;
+	end.bits = UINT64_MAX;
 	//time.offset.hour = 20;
 	//time.offset.min = 8;
 }

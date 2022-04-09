@@ -6,7 +6,7 @@
 /*   By: AleXwern <AleXwern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/16 14:45:39 by AleXwern          #+#    #+#             */
-/*   Updated: 2021/11/17 16:07:20 by AleXwern         ###   ########.fr       */
+/*   Updated: 2022/04/09 23:16:11 by AleXwern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,11 +39,16 @@ void			Timeliner::parse_config(void)
 			add_blacklist(split[1]);
 			break;
 		case TAG_TIME_MAX:
+			parse_time(split[1], &end.offset);
 			break;
 		case TAG_TIME_MIN:
+			parse_time(split[1], &start.offset);
 			break;
 		case TAG_HP_MIN:
 			minhp = atoi(split[1]);
+			break;
+		case TAG_OFFSET:
+			parse_time(split[1], &time.offset);
 			break;
 		default:
 			break;
