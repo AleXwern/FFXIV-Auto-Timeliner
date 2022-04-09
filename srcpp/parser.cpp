@@ -6,27 +6,28 @@
 /*   By: AleXwern <AleXwern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/17 15:48:33 by AleXwern          #+#    #+#             */
-/*   Updated: 2021/11/17 17:01:45 by AleXwern         ###   ########.fr       */
+/*   Updated: 2022/04/09 18:12:02 by AleXwern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "timeliner.hpp"
+#include <stdio.h>
 
-void		Timeliner::parse_file(void)
+void			Timeliner::parse_file(void)
 {
 	char	*line;
 
 	while (get_next_line(infile, &line) == 1)
 	{
-		if (((short*)line)[0] == ATK_OPCODE)
+		if (((short*)line)[0] == ATK_OPCODE || ((short*)line)[0] == AOE_OPCODE)
 			sort_output(line);
 		free(line);
 	}
 }
 
-void		Timeliner::print_time(t_toffset *time)
+void			Timeliner::print_time(t_toffset *time)
 {
-	char	out[11];
+	char		out[11];
 
 	ft_memcpy(out, "00:00:00 - ", 11);
 	out[0] = (time->hour / 10) + '0';
@@ -38,36 +39,42 @@ void		Timeliner::print_time(t_toffset *time)
 	write(outfile, out, 11);
 }
 
-void		Timeliner::sort_output(char *line)
+void			Timeliner::sort_output(char *line)
 {
-	char	**split;
-	char	*out;
-	t_toffset	time;
+	char		**split;
+	char		*out;
+	t_toffset	lineTime;
 
 	split = ft_strsplit(line, '|');
+	//printf("Network data of %lu\n", ft_listlen(split));
 	if (ft_listlen(split) < 40)
 	{
 		ft_splitfree(split);
 		return ;
 	}
-	if (check_blacklist(split[3]))
+	if (check_blacklist(split[PART_NAME]))
 	{
 		ft_splitfree(split);
 		return ;
 	}
-	parse_time(split[1], &time);
-	print_time(&time);
-	ft_putstr_fd(split[3], outfile);
+	parse_time(split[PART_DATETIME], &lineTime);
+	if (time.bits)
+		offset_time(&lineTime, &time.offset);
+	print_time(&lineTime);
+	ft_putstr_fd(split[PART_NAME], outfile);
 	ft_putstr_fd(" - Attack: ", outfile);
-	ft_putstr_fd(split[5], outfile);
-	ft_putstr_fd(" - MAX HP: ", outfile);
-	ft_putendl_fd(split[35], outfile);
+	ft_putstr_fd(split[PART_ATTACKNAME], outfile);
+	ft_putstr_fd(" - Target: ", outfile);
+	ft_putstr_fd(split[PART_TARGETNAME], outfile);
+	ft_putstr_fd(" - Damage: ", outfile);
+	ft_putnbr_fd(get_damage(split[PART_DAMAGE]), outfile);
+	ft_putchar_fd('\n', outfile);
 	ft_splitfree(split);
 }
 
 //	I'll hate my life soon with this
 //	Effectice string comparisons are not my field
-int			Timeliner::check_blacklist(char *line)
+int				Timeliner::check_blacklist(char *line)
 {
 	for (size_t i = 0; i < blcount; i++)
 	{
@@ -75,4 +82,21 @@ int			Timeliner::check_blacklist(char *line)
 			return (1);
 	}
 	return (0);
+}
+
+u_int32_t		Timeliner::get_damage(char *str)
+{
+	long		raw;
+	u_int32_t	damage = 0;
+
+	raw = strtol(str, NULL, 16);
+	if (raw & FLAG_BIGHIT == FLAG_BIGHIT)
+	{
+		damage = (raw & 0xff) << 16;
+		damage += (raw & 0xff000000) >> 8;
+		damage += ((raw & 0xff0000) >> 16) - (raw & 0xff);
+	}
+	else
+		damage = (raw & 0xffff0000) >> 16;
+	return (damage);
 }

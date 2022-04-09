@@ -6,7 +6,7 @@
 /*   By: AleXwern <AleXwern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/17 16:13:15 by AleXwern          #+#    #+#             */
-/*   Updated: 2021/11/17 17:00:33 by AleXwern         ###   ########.fr       */
+/*   Updated: 2022/04/09 16:44:58 by AleXwern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,15 +24,35 @@
 */
 void	parse_time(char *str, t_toffset *time)
 {
-	time->year = ft_atoi(str);
-	time->month = ft_atoi(str + 5);
-	time->day = ft_atoi(str + 8);
-	time->hour = ft_atoi(str + 11);
-	time->min = ft_atoi(str + 14);
-	time->sec = ft_atoi(str + 17);
+	time->year = atoi(str);
+	time->month = atoi(str + 5);
+	time->day = atoi(str + 8);
+	time->hour = atoi(str + 11);
+	time->min = atoi(str + 14);
+	time->sec = atoi(str + 17);
 }
 
 void	offset_time(t_toffset *time, t_toffset *offset)
 {
-	
+	t_toffset	shift;
+
+	shift = *offset;
+	if (time->sec < shift.sec)
+	{
+		time->sec += 60;
+		shift.min++;
+	}
+	time->sec -= shift.sec;
+	if (time->min < shift.min)
+	{
+		time->min += 60;
+		shift.hour++;
+	}
+	time->min -= shift.min;
+	if (time->hour < shift.hour)
+	{
+		time->hour += 24;
+		shift.day++;
+	}
+	time->hour -= shift.hour;
 }

@@ -4,7 +4,6 @@
 1. Filter out enemy attack cast instances from ACT log file and create refined output file
 2. For now do some output but the end result should be an Excel sheet -> look up CSV format
 3. ARGV: Time offset, end/start point and maybe target filter
-4. Attack opcodes for later:
 
 Must Haves
 - The ability to export all boss casts to a google doc. This should have the name of the cast + the time at which the cast snapshots/finishes.
